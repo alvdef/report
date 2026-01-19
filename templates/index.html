@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Economy Dashboard | 2000-2021</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Inter:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/topojson@3"></script>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <header>
+            <div class="logo">
+                <h1>Global Economy <span>Insights</span></h1>
+            </div>
+            <div class="global-controls">
+                <div class="control-group">
+                    <button id="reset-selection" class="btn">Reset Selection</button>
+                </div>
+                <div class="control-group">
+                    <label>Filter by Cluster:</label>
+                    <select id="cluster-filter">
+                        <option value="all">All Growth Patterns</option>
+                        <option value="0">Industrial Growth</option>
+                        <option value="1">Service Expansion</option>
+                        <option value="2">Agri-Transition</option>
+                    </select>
+                </div>
+                <div class="stats-overview">
+                    <div class="stat-item">
+                        <span class="label">Total Countries</span>
+                        <span id="stat-count" class="value">50</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="label">Selected Country</span>
+                        <span id="selected-country-display" class="value highlight">N/A</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="grid-layout">
+            <!-- Top Row -->
+            <section class="card map-card">
+                <div class="card-header">
+                    <h2>Global Distribution of Growth</h2>
+                    <p>Economic performance across the top 50 growing nations</p>
+                </div>
+                <div id="map-viz" class="viz-container"></div>
+            </section>
+
+            <section class="card pca-card">
+                <div class="card-header">
+                    <h2>Structural Transformation (PCA)</h2>
+                    <p>Clustering countries based on sector share shifts</p>
+                </div>
+                <div id="pca-viz" class="viz-container"></div>
+            </section>
+
+            <!-- Bottom Row -->
+            <section class="card bar-card">
+                <div class="card-header">
+                    <h2>Sector Delta (2000 vs 2021)</h2>
+                    <p>Shift in % share of GDP for primary, secondary, and tertiary sectors</p>
+                </div>
+                <div id="bar-viz" class="viz-container"></div>
+            </section>
+
+            <section class="card history-card">
+                <div class="card-header">
+                    <h2>GDP Growth Trajectory</h2>
+                    <p>Absolute GDP development over time (Normalized)</p>
+                </div>
+                <div id="history-viz" class="viz-container"></div>
+            </section>
+        </main>
+
+        <div id="tooltip" class="tooltip hidden"></div>
+    </div>
+
+    <script src="/static/js/main.js"></script>
+</body>
+
+</html>

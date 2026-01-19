@@ -1,0 +1,279 @@
+:root {
+    --bg-color: #0f172a;
+    --card-bg: rgba(30, 41, 59, 0.7);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent: #3b82f6;
+    --accent-glow: rgba(59, 130, 246, 0.5);
+    --border: rgba(255, 255, 255, 0.1);
+
+    /* Cluster Colors */
+    --c0: #34d399;
+    /* Industrial - Greenish */
+    --c1: #60a5fa;
+    /* Service - Blueish */
+    --c2: #f472b6;
+    /* Agri - Pinkish */
+    --c-default: #94a3b8;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+    /* We want a single screen dashboard */
+}
+
+h1,
+h2,
+h3 {
+    font-family: 'Outfit', sans-serif;
+}
+
+.dashboard-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.logo h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.logo span {
+    color: var(--accent);
+}
+
+.global-controls {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.control-group label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.stats-overview {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-item .label {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.stat-item .value {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.stat-item .value.highlight {
+    color: var(--accent);
+}
+
+select,
+.btn {
+    background: var(--card-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-family: inherit;
+    cursor: pointer;
+    outline: none;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.btn:hover {
+    background: rgba(59, 130, 246, 0.2);
+    border-color: var(--accent);
+}
+
+.grid-layout {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 1.5rem;
+    min-height: 0;
+    /* Important for flex-grid nesting */
+}
+
+.card {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(59, 130, 246, 0.5);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2),
+        0 10px 10px -5px rgba(0, 0, 0, 0.1),
+        0 0 15px var(--accent-glow);
+}
+
+.card-header {
+    margin-bottom: 1rem;
+}
+
+.card-header h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.card-header p {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.viz-container {
+    flex: 1;
+    position: relative;
+    width: 100%;
+    min-height: 0;
+    overflow: hidden;
+    /* Prevent growing */
+}
+
+.viz-container svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* Specific Card Layouts */
+.map-card {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+}
+
+.pca-card {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+}
+
+.bar-card {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+}
+
+.history-card {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+}
+
+/* Tooltip */
+.tooltip {
+    position: absolute;
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid var(--accent);
+    padding: 0.75rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    pointer-events: none;
+    z-index: 1000;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    transition: opacity 0.2s;
+}
+
+.tooltip.hidden {
+    opacity: 0;
+}
+
+/* Visualization Styles */
+.country {
+    stroke: var(--bg-color);
+    stroke-width: 0.5px;
+    transition: fill 0.2s;
+}
+
+.dot {
+    stroke: black;
+    stroke-width: 0.5px;
+    cursor: pointer;
+    transition: r 0.2s, stroke 0.2s;
+}
+
+.dot:hover {
+    stroke: white;
+    stroke-width: 1.5px;
+}
+
+.selection-border {
+    stroke: #000;
+    stroke-width: 1px;
+    fill: none;
+    pointer-events: none;
+}
+
+.axis-label {
+    fill: var(--text-secondary);
+    font-size: 0.7rem;
+}
+
+.grid-line {
+    stroke: var(--border);
+    stroke-dasharray: 2, 2;
+}
+
+.legend-item {
+    cursor: pointer;
+}
+
+.legend-item:hover text {
+    fill: var(--text-primary);
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: var(--text-secondary);
+}
