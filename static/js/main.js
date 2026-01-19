@@ -328,7 +328,7 @@ function renderBarChart() {
     const svg = d3.select('#bar-viz-svg');
     const width = +svg.attr('width');
     const height = +svg.attr('height');
-    const margin = {top: 40, right: 30, bottom: 30, left: 100};
+    const margin = {top: 40, right: 30, bottom: 50, left: 100};
 
     const chartG = svg.select('.chart-g');
     const xAxisG = svg.select('.x-axis');
@@ -352,8 +352,8 @@ function renderBarChart() {
     }
 
     placeholder.transition().duration(300).style('opacity', 0);
-    xAxisG.transition().duration(500).style('opacity', 1);
-    yAxisG.transition().duration(500).style('opacity', 1);
+    xAxisG.style('opacity', 1);
+    yAxisG.style('opacity', 1);
     title.transition().duration(500).style('opacity', 1);
 
     const data = [
@@ -429,13 +429,31 @@ function renderBarChart() {
         .attr('fill', 'var(--text-primary)')
         .attr('font-weight', 'bold')
         .text(`${selectedCountry.name} Sector Shifts`);
+
+    // Add X-axis label
+    chartG.selectAll('.x-axis-label').data([null]).join('text')
+        .attr('class', 'x-axis-label axis-label')
+        .attr('x', margin.left + (width - margin.left - margin.right) / 2)
+        .attr('y', height - 5)
+        .attr('text-anchor', 'middle')
+        .text('Shift in % GDP Share (2000-2021)');
+
+    // Add Vertical Grid Lines (Rules)
+    chartG.selectAll('.grid-line').data(x.ticks(5)).join('line')
+        .attr('class', 'grid-line')
+        .attr('x1', d => x(d))
+        .attr('x2', d => x(d))
+        .attr('y1', margin.top)
+        .attr('y2', height - margin.bottom)
+        .style('stroke', 'var(--border)')
+        .style('stroke-dasharray', '2,2');
 }
 
 function renderHistory() {
     const svg = d3.select('#history-viz-svg');
     const width = +svg.attr('width');
     const height = +svg.attr('height');
-    const margin = {top: 20, right: 30, bottom: 30, left: 50};
+    const margin = {top: 20, right: 30, bottom: 50, left: 60};
 
     const chartG = svg.select('.chart-g');
     const xAxisG = svg.select('.x-axis');
@@ -456,8 +474,8 @@ function renderHistory() {
     }
 
     placeholder.transition().duration(300).style('opacity', 0);
-    xAxisG.transition().duration(500).style('opacity', 1);
-    yAxisG.transition().duration(500).style('opacity', 1);
+    xAxisG.style('opacity', 1);
+    yAxisG.style('opacity', 1);
 
     const data = selectedCountry.history;
 
@@ -528,6 +546,41 @@ function renderHistory() {
         gradient.append('stop').attr('offset', '0%').attr('stop-color', 'var(--accent)');
         gradient.append('stop').attr('offset', '100%').attr('stop-color', 'transparent');
     }
+
+    // Add Axis Labels
+    chartG.selectAll('.x-axis-label').data([null]).join('text')
+        .attr('class', 'x-axis-label axis-label')
+        .attr('x', margin.left + (width - margin.left - margin.right) / 2)
+        .attr('y', height - 5)
+        .attr('text-anchor', 'middle')
+        .text('Year');
+
+    chartG.selectAll('.y-axis-label').data([null]).join('text')
+        .attr('class', 'y-axis-label axis-label')
+        .attr('transform', 'rotate(-90)')
+        .attr('x', -(margin.top + (height - margin.top - margin.bottom) / 2))
+        .attr('y', 15)
+        .attr('text-anchor', 'middle')
+        .text('GDP (Normalized $)');
+
+    // Add Grid Lines (Rules)
+    chartG.selectAll('.grid-line-x').data(x.ticks(5)).join('line')
+        .attr('class', 'grid-line-x')
+        .attr('x1', d => x(d))
+        .attr('x2', d => x(d))
+        .attr('y1', margin.top)
+        .attr('y2', height - margin.bottom)
+        .style('stroke', 'var(--border)')
+        .style('stroke-dasharray', '2,2');
+
+    chartG.selectAll('.grid-line-y').data(y.ticks(5)).join('line')
+        .attr('class', 'grid-line-y')
+        .attr('x1', margin.left)
+        .attr('x2', width - margin.right)
+        .attr('y1', d => y(d))
+        .attr('y2', d => y(d))
+        .style('stroke', 'var(--border)')
+        .style('stroke-dasharray', '2,2');
 }
 
 // --- HELPERS ---

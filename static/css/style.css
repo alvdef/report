@@ -254,7 +254,15 @@ select,
 
 .axis-label {
     fill: var(--text-secondary);
-    font-size: 0.7rem;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+}
+
+.x-axis path,
+.x-axis line,
+.y-axis path,
+.y-axis line {
+    stroke: var(--text-secondary);
 }
 
 .grid-line {
